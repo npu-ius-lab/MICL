@@ -1,0 +1,52 @@
+debug: false
+save_dir: /home/ros/deep_learning/Place_recognition/continual_PR/CCL/only_oxford/pointnetvlad_test
+data: 
+  num_points: 4096
+  dataset_folder: /home/ps/cjf/nas/Datasets/benchmark_datasets
+  aug_mode: 1
+  pin_memory: True
+
+model: 
+  # name: logg3d
+  name: PointNetVlad
+  # name: MinkFPN_GeM
+  mink_quantization_size: 0.01
+  planes: [32,64,64]
+  layers: [1,1,1]
+  num_top_down: 1
+  conv0_kernel_size: 5
+  output_dim: 256
+  feature_size: 256
+  normalize_embeddings: False
+train: 
+  uncertainty_weight: False
+  sample_pair_num: 32
+  num_workers: 4
+  batch_size: 32
+  batch_size_limit: 32
+  batch_expansion_rate: 2
+
+  memory:
+    num_pairs: 256
+  optimizer: 
+    name: 'SGD'
+    momentum: 0.9
+    lr: 0.001
+    weight_decay: 0.001
+    scheduler: 'MultiStepLR'
+    scheduler_milestones: [40]
+    epochs: 90
+  loss: 
+    incremental:
+      name: 'MI'
+      weight: 1 # KD default 1
+      margin: 0.0002
+      adjust_weight: True 
+      gamma: 10 # default 10
+
+eval:
+  batch_size: 32
+  thresh_min: 0
+  thresh_max: 1
+  num_thresholds: 1000
+  similarity: euclidean

@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python only_train_oxford",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "training/train.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config",
+                "config/protocols/oxford.yaml",
+                "--train_environment",
+                "/media/ros/SSData/dataset/Incloud_dataset/pkl_new/Oxford_train_queries.pickle",
+                "save_dir",
+                "results/projector/oxford"
+            ]
+        },
+        
+        {
+            "name": "Python incremental_train_4steps",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "training/train_incremental.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--initial_ckpt",
+                "/home/ros/deep_learning/Place_recognition/continual_PR/InCloud_4_14_sep/init_weights/projector_use_embedding/PointNetVlad/final_ckpt.pth",
+                "--initial_environment",
+                "/media/ros/SSData/dataset/Incloud_dataset/pkl_new/Oxford_train_queries.pickle",
+                "--incremental_environments",
+                "/media/ros/SSData/dataset/Incloud_dataset/pkl_new/DCC_train.pickle", "/media/ros/SSData/dataset/Incloud_dataset/pkl_new/Riverside_train.pickle", "/media/ros/SSData/dataset/Incloud_dataset/pkl_new/In-house_train_queries.pickle",
+                "--config",
+                "config/protocols/4-step.yaml",
+                "train.memory.num_pairs",
+                "256",
+                "train.loss.incremental.name",
+                "MI",
+                "train.loss.incremental.weight",
+                "0.1",
+                "train.loss.incremental.adjust_weight",
+                "True",
+                "save_dir",
+                "results/projector/InCloud_MinkLoc3D_4step_memory_batch_MI_place_test_continual"
+            ]
+        },
+        
+    ]
+}

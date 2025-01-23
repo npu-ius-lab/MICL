@@ -1,0 +1,55 @@
+save_dir: /home/ros/deep_learning/Place_recognition/continual_PR/InCloud/results/projector/InCloud_Mink_only_oxford
+debug: false
+data: 
+  num_points: 4096
+  dataset_folder: /datasets/work/d61-eif/source/incrementalPointClouds
+  aug_mode: 1
+  pin_memory: false
+model: 
+  # name: MinkFPN_GeM
+  name: PointNetVlad
+  # name: logg3d
+  projector: true
+  mink_quantization_size: 0.01
+  planes: [32,64,64]
+  layers: [1,1,1]
+  num_top_down: 1
+  conv0_kernel_size: 5
+  output_dim: 256
+  feature_size: 256
+  normalize_embeddings: False
+train: 
+  uncertainty_weight: true
+  sample_pair_num: 72  
+  num_workers: 4
+  batch_size: 72
+  batch_size_limit: 72
+  batch_expansion_rate: 2
+  batch_expansion_th: 0.7
+  
+  memory:
+    num_pairs: 0
+  optimizer: 
+    name: 'Adam'
+    lr: 0.001
+    weight_decay: 0.001
+    scheduler: 'MultiStepLR'
+    scheduler_milestones: [30]
+    epochs: 90
+  loss: 
+    pr:
+      name: BatchHardTripletMarginLoss
+      margin: 0.2
+    incremental:
+      name: 'None' 
+      weight: 100
+      margin: 0.0002
+      adjust_weight: False 
+      gamma: 10
+eval:
+  batch_size: 256
+  thresh_min: 0
+  thresh_max: 1
+  num_thresholds: 1000
+  similarity: euclidean
+
