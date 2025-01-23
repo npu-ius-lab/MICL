@@ -28,7 +28,7 @@ We follow this [link](https://github.com/csiro-robotics/InCloud) to generate .pi
 We provide a launch.json file in the training folder, which contains two pre-configured training commands. You can adapt the content of this file to fit your own project needs.
 
 ### Evaluation
-To evaluate InCloud run the following command:
+To evaluate model run the following command:
 
     python eval/evaluate.py --config config/protocols/<config> --ckpt <path_to_ckpt>
    
